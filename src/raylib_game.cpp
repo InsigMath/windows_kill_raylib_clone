@@ -13,6 +13,7 @@
  *
  ********************************************************************************************/
 
+#include "player.h"
 #include "raylib.h"
 
 #if defined(PLATFORM_WEB)
@@ -23,7 +24,7 @@
 // Local Variables Definition (local to this module)
 //----------------------------------------------------------------------------------
 constexpr int screenWidth{800};
-constexpr int screenHeight{450};
+constexpr int screenHeight{600};
 
 //----------------------------------------------------------------------------------
 // Main entry point
@@ -33,19 +34,21 @@ int main(int argc, char **argv) {
   //---------------------------------------------------------
   InitWindow(screenWidth, screenHeight, "Windows Kill Clone - Experiment");
 
+  Player player = Player(Vector2{400, 300});
+
 #if defined(PLATFORM_WEB)
   // emscripten_set_main_loop(UpdateDrawFrame, 60, 1);
 #else
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second
+  SetConfigFlags(FLAG_WINDOW_HIGHDPI | FLAG_VSYNC_HINT);
   //--------------------------------------------------------------------------------------
 
   // Main game loop
   while (!WindowShouldClose()) // Detect window close button or ESC key
   {
-    // UpdateDrawFrame();
     BeginDrawing();
-    ClearBackground(RAYWHITE);
-    DrawText("Testing Drawing", 100, 100, 50, BLACK);
+    ClearBackground(BLACK);
+    player.Draw();
     EndDrawing();
   }
 #endif
