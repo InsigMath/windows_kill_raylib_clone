@@ -46,6 +46,9 @@ int main(int argc, char **argv) {
   // Main game loop
   while (!WindowShouldClose()) // Detect window close button or ESC key
   {
+
+    player.Update();
+
     BeginDrawing();
     ClearBackground(BLACK);
     player.Draw();

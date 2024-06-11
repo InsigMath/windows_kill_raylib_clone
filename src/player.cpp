@@ -1,4 +1,6 @@
 #include "player.h"
+#include "raylib.h"
+#include "raymath.h"
 #include "rlgl.h"
 
 #include <algorithm>
@@ -14,13 +16,13 @@ void Player::Draw() {
     float yMinR1 = 23.0f * std::clamp(sinf(DEG2RAD * i), -1.0f, 1.0f) + m_pos.y;
 
     float xMajR2 =
-        30.0f * std::clamp(cosf(DEG2RAD * (i + 0.1f)), -1.0f, 1.0f) + m_pos.x;
+        30.0f * std::clamp(cosf(DEG2RAD * (i + 1.0f)), -1.0f, 1.0f) + m_pos.x;
     float yMajR2 =
-        30.0f * std::clamp(sinf(DEG2RAD * (i + 0.1f)), -1.0f, 1.0f) + m_pos.y;
+        30.0f * std::clamp(sinf(DEG2RAD * (i + 1.0f)), -1.0f, 1.0f) + m_pos.y;
     float xMinR2 =
-        23.0f * std::clamp(cosf(DEG2RAD * (i + 0.1f)), -1.0f, 1.0f) + m_pos.x;
+        23.0f * std::clamp(cosf(DEG2RAD * (i + 1.0f)), -1.0f, 1.0f) + m_pos.x;
     float yMinR2 =
-        23.0f * std::clamp(sinf(DEG2RAD * (i + 0.1f)), -1.0f, 1.0f) + m_pos.y;
+        23.0f * std::clamp(sinf(DEG2RAD * (i + 1.0f)), -1.0f, 1.0f) + m_pos.y;
 
     rlVertex2f(xMinR1, yMinR1);
     rlVertex2f(xMajR1, yMajR1);
@@ -31,4 +33,26 @@ void Player::Draw() {
     rlVertex2f(xMajR2, yMajR2);
   }
   rlEnd();
+}
+
+void Player::Update() {
+  auto velocity = Vector2Zero();
+  if (IsKeyDown(KEY_D)) {
+    velocity.x = 1.0f;
+  }
+  if (IsKeyDown(KEY_A)) {
+    velocity.x = -1.0f;
+  }
+  if (IsKeyDown(KEY_W)) {
+    velocity.y = -1.0f;
+  }
+  if (IsKeyDown(KEY_S)) {
+    velocity.y = 1.0f;
+  }
+
+  if (Vector2Length(velocity) > 1.0f) {
+    velocity = Vector2Normalize(velocity);
+  }
+
+  m_pos = Vector2Add(m_pos, Vector2Scale(velocity, m_mov_speed * 1.0f / 60.0f));
 }
