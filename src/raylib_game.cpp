@@ -2,8 +2,7 @@
  *
  *   raylib game template
  *
- *   Windows Kill Clone
- *   Raylib Experiment
+ *   Windows Kill Clone Raylib Experiment
  *
  *   This game has been created using raylib (www.raylib.com)
  *   raylib is licensed under an unmodified zlib/libpng license (View raylib.h
@@ -13,9 +12,11 @@
  *
  ********************************************************************************************/
 
+#include "game.h"
 #include "player.h"
 #include "player_fire.h"
 #include "raylib.h"
+#include <stdio.h>
 #include <vector>
 
 #if defined(PLATFORM_WEB)
@@ -25,7 +26,7 @@
 //----------------------------------------------------------------------------------
 // Local Variables Definition (local to this module)
 //----------------------------------------------------------------------------------
-constexpr int screenWIDTH{800};
+constexpr int screenWidth{1000};
 constexpr int screenHeight{600};
 
 //----------------------------------------------------------------------------------
@@ -35,7 +36,16 @@ int main(int argc, char **argv)
 {
     // Initialization
     //---------------------------------------------------------
-    InitWindow(screenWIDTH, screenHeight, "Windows Kill Clone - Experiment");
+    InitWindow(screenWidth, screenHeight, "Windows LOVE YOU!!");
+
+    STATE state = STATE::PLAYING;
+    Game game = Game{.fireDamage = 1.0f,
+                     .fireRate = 500.0f,
+                     .gotPierceDamage = false,
+                     .gotMultiFire = false,
+                     .gotSplashDamage = false,
+                     .splashDamage = 1.0f,
+                     .pierceDamage = 1.0f};
 
     Player player = Player(Vector2{400, 300});
 
@@ -57,7 +67,8 @@ int main(int argc, char **argv)
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
             // TODO: This will be in a game struct that will hold all this information
-            PlayerFire fire(mouse, player.m_pos, 500, 1, 0, false, false);
+            PlayerFire fire(mouse, player.m_pos, game.fireRate, game.fireDamage, game.splashDamage,
+                            game.gotSplashDamage, game.gotPierceDamage);
             allFires.push_back(fire);
         }
 
