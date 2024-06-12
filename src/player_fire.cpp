@@ -1,5 +1,7 @@
 #include "player_fire.h"
+#include "raylib.h"
 #include "raymath.h"
+#include "rlgl.h"
 
 PlayerFire::~PlayerFire()
 {
@@ -7,6 +9,12 @@ PlayerFire::~PlayerFire()
 
 void PlayerFire::Draw()
 {
+    rlPushMatrix();
+    rlTranslatef(m_pos.x, m_pos.y, 0.0f);
+    rlRotatef(-RAD2DEG * Vector2Angle(m_dir, Vector2{1.0, 0.0}), 0.0, 0.0, 1.0);
+    rlTranslatef(-m_pos.x, -m_pos.y, 0.0f);
+    DrawEllipse(m_pos.x, m_pos.y, 15.0f, 7.0f, WHITE);
+    rlPopMatrix();
 }
 
 void PlayerFire::Update()

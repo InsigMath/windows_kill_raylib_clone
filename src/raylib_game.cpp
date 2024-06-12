@@ -62,10 +62,18 @@ int main(int argc, char **argv)
         }
 
         player.Update();
+        for (auto &shot : allFires)
+        {
+            shot.Update();
+        }
 
         BeginDrawing();
         ClearBackground(BLACK);
         player.Draw();
+        for (auto &shot : allFires)
+        {
+            shot.Draw();
+        }
         EndDrawing();
     }
 #endif
