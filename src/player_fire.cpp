@@ -30,3 +30,24 @@ PlayerFire::PlayerFire(Vector2 pos, Vector2 player_pos, float fireSpeed, float f
     m_dir = Vector2Normalize(Vector2Subtract(m_pos, player_pos));
     m_pos = Vector2Add(player_pos, Vector2Scale(m_dir, 50));
 }
+
+void PlayerFire::CheckCollisions()
+{
+    if (m_pos.x >= GetScreenWidth())
+    {
+        m_active = false;
+        SetWindowSize(GetScreenWidth() + 10, GetScreenHeight());
+    }
+    if (m_pos.x < 0)
+    {
+        m_active = false;
+    }
+    if (m_pos.y >= GetScreenHeight())
+    {
+        m_active = false;
+    }
+    if (m_pos.y < 0)
+    {
+        m_active = false;
+    }
+}

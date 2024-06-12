@@ -16,15 +16,11 @@
 #include "player.h"
 #include "player_fire.h"
 #include "raylib.h"
-#include <iostream>
-#include <shared_mutex>
-#include <stdio.h>
 #include <vector>
 
 #if defined(PLATFORM_WEB)
 #include <emscripten/emscripten.h>
 #endif
-
 //----------------------------------------------------------------------------------
 // Local Variables Definition (local to this module)
 //----------------------------------------------------------------------------------
@@ -63,7 +59,6 @@ int main(int argc, char **argv)
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-
         mouse = GetMousePosition();
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
@@ -79,11 +74,7 @@ int main(int argc, char **argv)
             if (shot.m_active)
             {
                 shot.Update();
-                if (shot.m_pos.x == screenWidth || shot.m_pos.x < 0 || shot.m_pos.y < 0 || shot.m_pos.y == screenHeight)
-                {
-                    std::cout << "I get here right??" << std::endl;
-                    shot.m_active = false;
-                }
+                shot.CheckCollisions();
             }
         }
 

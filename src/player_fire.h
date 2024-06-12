@@ -29,6 +29,7 @@ class PlayerFire
   public:
     void Draw();
     void Update();
+    void CheckCollisions();
     int getID()
     {
         return m_ID;
