@@ -24,6 +24,7 @@ class PlayerFire
     float m_splashDamage;
     bool m_hasSplashDamage;
     bool m_hasPierceDamage;
+    bool m_active;
 
   public:
     void Draw();

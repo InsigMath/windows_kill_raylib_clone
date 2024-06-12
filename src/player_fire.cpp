@@ -19,12 +19,14 @@ void PlayerFire::Draw()
 
 void PlayerFire::Update()
 {
+    m_pos = Vector2Add(m_pos, Vector2Scale(m_dir, m_fireSpeed * 1.0f / 60.0f));
 }
 
 PlayerFire::PlayerFire(Vector2 pos, Vector2 player_pos, float fireSpeed, float fireDamage, float splashDamage,
                        bool hasSplashDamage, bool hasPierceDamage)
     : m_pos(pos), m_fireSpeed(fireSpeed), m_splashDamage(splashDamage), m_hasSplashDamage(hasSplashDamage),
-      m_hasPierceDamage(hasPierceDamage)
+      m_hasPierceDamage(hasPierceDamage), m_active(true)
 {
     m_dir = Vector2Normalize(Vector2Subtract(m_pos, player_pos));
+    m_pos = Vector2Add(player_pos, Vector2Scale(m_dir, 50));
 }
