@@ -1,7 +1,10 @@
 #ifndef PLAYER_FIRE_H
 #define PLAYER_FIRE_H
 
+#include "game.h"
+#include "globals.h"
 #include "raylib.h"
+
 
 class PlayerFire
 {
@@ -29,7 +32,7 @@ class PlayerFire
   public:
     void Draw();
     void Update();
-    void CheckCollisions();
+    void CheckCollisions(Game &game);
     int getID()
     {
         return m_ID;

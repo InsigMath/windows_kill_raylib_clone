@@ -13,6 +13,7 @@
  ********************************************************************************************/
 
 #include "game.h"
+#include "globals.h"
 #include "player.h"
 #include "player_fire.h"
 #include "raylib.h"
@@ -21,11 +22,10 @@
 #if defined(PLATFORM_WEB)
 #include <emscripten/emscripten.h>
 #endif
+
 //----------------------------------------------------------------------------------
 // Local Variables Definition (local to this module)
 //----------------------------------------------------------------------------------
-constexpr int screenWidth{1000};
-constexpr int screenHeight{600};
 
 //----------------------------------------------------------------------------------
 // Main entry point
@@ -34,16 +34,19 @@ int main(int argc, char **argv)
 {
     // Initialization
     //---------------------------------------------------------
-    InitWindow(screenWidth, screenHeight, "Windows LOVE YOU!!");
+    InitWindow(1000, 600, "Windows LOVE YOU!!");
 
-    STATE state = STATE::PLAYING;
     Game game = Game{.gotPierceDamage = false,
                      .gotSplashDamage = false,
                      .gotMultiFire = false,
+                     .increaseWinSz = false,
                      .fireRate = 1500.0f,
                      .fireDamage = 1.0f,
                      .splashDamage = 1.0f,
-                     .pierceDamage = 1.0f};
+                     .pierceDamage = 1.0f,
+                     .screenWidth = GetScreenWidth(),
+                     .screenHeight = GetScreenHeight(),
+                     .state = STATE::PLAYING};
 
     Player player = Player(Vector2{400, 300});
 
@@ -51,7 +54,7 @@ int main(int argc, char **argv)
     // emscripten_set_main_loop(UpdateDrawFrame, 60, 1);
 #else
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
-    SetConfigFlags(FLAG_WINDOW_HIGHDPI | FLAG_VSYNC_HINT);
+    SetConfigFlags(FLAG_WINDOW_HIGHDPI | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     //--------------------------------------------------------------------------------------
     auto mouse = GetMousePosition();
     std::vector<PlayerFire> allFires;
@@ -74,7 +77,7 @@ int main(int argc, char **argv)
             if (shot.m_active)
             {
                 shot.Update();
-                shot.CheckCollisions();
+                shot.CheckCollisions(game);
             }
         }
 
@@ -87,6 +90,12 @@ int main(int argc, char **argv)
             {
                 shot.Draw();
             }
+        }
+
+        if (game.increaseWinSz)
+        {
+            SetWindowSize(game.screenWidth, game.screenHeight);
+            game.increaseWinSz = false;
         }
         EndDrawing();
     }

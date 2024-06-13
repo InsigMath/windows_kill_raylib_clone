@@ -1,4 +1,5 @@
 #include "player_fire.h"
+
 #include "raylib.h"
 #include "raymath.h"
 #include "rlgl.h"
@@ -31,18 +32,21 @@ PlayerFire::PlayerFire(Vector2 pos, Vector2 player_pos, float fireSpeed, float f
     m_pos = Vector2Add(player_pos, Vector2Scale(m_dir, 50));
 }
 
-void PlayerFire::CheckCollisions()
+void PlayerFire::CheckCollisions(Game &game)
 {
     if (m_pos.x >= GetScreenWidth())
     {
         m_active = false;
-        SetWindowSize(GetScreenWidth() + 10, GetScreenHeight());
-    }
-    if (m_pos.x < 0)
-    {
-        m_active = false;
+        game.screenWidth += 10;
+        game.increaseWinSz = true;
     }
     if (m_pos.y >= GetScreenHeight())
+    {
+        m_active = false;
+        game.screenHeight += 10;
+        game.increaseWinSz = true;
+    }
+    if (m_pos.x < 0)
     {
         m_active = false;
     }
